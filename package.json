@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "zip -r scrapper.zip"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,11 @@
     "dotenv": "^10.0.0",
     "playwright-aws-lambda": "^0.7.0",
     "playwright-core": "^1.16.2"
+  },
+  "devDependencies": {
+    "standard": "^16.0.4"
+  },
+  "eslintConfig": {
+    "extends": "standard"
   }
 }
