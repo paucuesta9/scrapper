@@ -21,6 +21,7 @@ const shops = [
     checkPrice: async ({ page, desiredPrice }) => {
       const content = await page.textContent('#total_dinamic')
       const actualPrice = parseFloat(content.replace('€', '').replace(',', '.').trim())
+      console.log('Actual price: ' + actualPrice)
       return desiredPrice >= actualPrice
     }
   },
@@ -31,6 +32,7 @@ const shops = [
     checkPrice: async ({ page, desiredPrice }) => {
       const content = await page.textContent('.prc__active-price')
       const actualPrice = parseFloat(content.replace('€', '').replace(',', '.').trim())
+      console.log('Actual price: ' + actualPrice)
       return desiredPrice >= actualPrice
     }
   },
@@ -41,6 +43,7 @@ const shops = [
     checkPrice: async ({ page, desiredPrice }) => {
       const content = await page.textContent('.single-product__amount')
       const actualPrice = parseFloat(content.replace('€', '').replace(',', '.').trim())
+      console.log('Actual price: ' + actualPrice)
       return desiredPrice >= actualPrice
     }
   }
@@ -59,7 +62,7 @@ exports.handler = async (event, context) => {
       const { checkPrice, vendor, url, desiredPrice } = shop
       console.log('new page')
       const page = await context.newPage()
-      console.log('goto' + url)
+      console.log('goto ' + url)
       await page.goto(url)
       console.log('check')
       const satisfies = await checkPrice({ page, desiredPrice })
