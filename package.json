@@ -14,7 +14,8 @@
     "@sendgrid/mail": "^7.5.0",
     "dotenv": "^10.0.0",
     "playwright-aws-lambda": "^0.7.0",
-    "playwright-core": "^1.16.2"
+    "playwright-core": "^1.16.2",
+    "twilio": "^3.71.1"
   },
   "devDependencies": {
     "standard": "^16.0.4"
