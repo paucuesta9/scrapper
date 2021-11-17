@@ -30,10 +30,17 @@ const shops = [
     url: 'https://www.decathlon.es/es/p/ordenador-de-buceo-cressi-leonardo-negro-azul/_/R-p-X8208311',
     desiredPrice: '120.00',
     checkPrice: async ({ page, desiredPrice }) => {
-      const content = await page.textContent('.prc__active-price')
-      const actualPrice = parseFloat(content.replace('€', '').replace(',', '.').trim())
-      console.log('Actual price: ' + actualPrice)
-      return desiredPrice >= actualPrice
+      const elements = await page.$$('script[type="application/ld+json"]')
+      for (const element of elements) {
+        const text = await page.evaluate(element => element.innerText, element)
+        const JSONparsedText = JSON.parse(text)
+        if (JSONparsedText['@type'] === 'Product') {
+          console.log(JSONparsedText.offers[0][0].price)
+          const actualPrice = parseFloat(JSONparsedText.offers[0][0].price)
+          console.log('Actual price: ' + actualPrice)
+          return desiredPrice >= actualPrice
+        }
+      }
     }
   },
   {
@@ -76,8 +83,8 @@ exports.handler = async (event, context) => {
       const sgMail = require('@sendgrid/mail')
       sgMail.setApiKey(process.env.SENDGRID_API_KEY)
       const msg = {
-        to: 'pau.cuesta@gmail.com',
-        from: 'hi@paucuesta.dev',
+        to: process.env.SEND_EMAIL_TO_CRESSI_LEONARDO,
+        from: process.env.SEND_EMAIL_FROM,
         subject: 'Cressi Leonardo ha baixat de preu!',
         text: 'Resultats: ' + desiredOn,
         html: '<p>Resultats: ' + desiredOn + '</p><b>Developed by Pau Cuesta</b>'
